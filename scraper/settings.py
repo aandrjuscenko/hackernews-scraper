@@ -81,6 +81,9 @@ DATABASES = {
         'PASSWORD': 'password123',            
         'HOST': 'localhost',                  
         'PORT': '3306',  
+        'TEST': {
+            'NAME': 'test_codnity_db', 
+        },
     }
 }
 
