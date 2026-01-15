@@ -3,38 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hacker News Article total</title>
+    <title>Hacker News Articles</title>
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+
+    <!-- jQuery и DataTables JS -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 </head>
 <body>
     <h1>Hacker News Articles</h1>
 
-    <table border="1">
-        <tr>
-            <th>Title</th>
-            <th>Link</th>
-            <th>Points</th>
-            <th>Date created</th>
-        </tr>
-        {% for article in page_obj %}
-        <tr>
-            <td>{{ article.title }}</td>
-            <td>{{ article.link }}</td>
-            <td>{{ article.points }}</td>
-            <td>{{ article.created_at }}</td>
-        </tr>
-        {% endfor %}
+    <table id="articles" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Link</th>
+                <th>Points</th>
+                <th>Date created</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for article in articles %}
+            <tr>
+                <td>{{ article.title }}</td>
+                <td><a href="{{ article.link }}" target="_blank">{{ article.link }}</a></td>
+                <td>{{ article.points }}</td>
+                <td>{{ article.created_at|date:"M d, Y, h:i a" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
     </table>
 
-    <div>
-        {% if page_obj.has_previous %}
-            <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
-        {% endif %}
-
-        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
-
-        {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">Next</a>
-        {% endif %}
-    </div>
+    <script>
+        $(document).ready(function() {
+            $('#articles').DataTable({
+                "pageLength": 10,   // showing asked 10 pages
+                "order": [[ 3, "desc" ]]  // sortying by date - new ones above
+            });
+        });
+    </script>
 </body>
 </html>
