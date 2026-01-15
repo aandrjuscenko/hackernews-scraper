@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hacker News Article total</title>
+</head>
+<body>
+    <h1>Hacker News Articles</h1>
+
+    <table border="1">
+        <tr>
+            <th>Title</th>
+            <th>Link</th>
+            <th>Points</th>
+            <th>Date created</th>
+        </tr>
+        {% for article in page_obj %}
+        <tr>
+            <td>{{ article.title }}</td>
+            <td>{{ article.link }}</td>
+            <td>{{ article.points }}</td>
+            <td>{{ article.created_at }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <div>
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
+
+        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">Next</a>
+        {% endif %}
+    </div>
+</body>
+</html>
