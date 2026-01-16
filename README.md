@@ -1,48 +1,58 @@
 # Scraper
 
-Проект **Scraper** — это Django-приложение для сбора новостей с [Hacker News](https://news.ycombinator.com/), сохранения их в базу данных и отображения на веб-странице с использованием DataTables.  
+The **Scraper** project is a Django application for collecting news from [Hacker News](https://news.ycombinator.com/), saving it to a database, and displaying it on a web page using DataTables.
 
 ---
 
-## Функционал
+## Features
 
-1. **Сбор новостей**: Скрипт собирает данные с Hacker News:
-   - Заголовок статьи (`title`)
-   - Ссылка (`link`)
-   - Количество очков (`points`)
-   - Дата создания (`created_at`)  
+1. **News Collection**  
+   The script collects data from Hacker News:
+   - Article title (`title`)
+   - Link (`link`)
+   - Number of points (`points`)
+   - Creation date (`created_at`)
 
-2. **Обновление очков и добавление новых статей**:  
-   - При повторном запуске команды `scrape.py` обновляются очки существующих статей.  
-   - Если появляются новые статьи, они добавляются в базу как новые записи.  
+2. **Updating Points and Adding New Articles**  
+   - Running the `scrape` command again updates the points of existing articles.  
+   - New articles are added to the database as new entries.
 
-3. **Консольная команда**: Для сбора и обновления данных используется Django management command с именем:
+3. **Console Command**  
+   To collect and update data, use the Django management command:
+   ```bash
+   python manage.py scrape
+   ```
 
-python manage.py scrape
 
+## Installation and Setup
 
-Установка и запуск
-1. Клонирование репозитория
+1. Clone the repository
 https://github.com/aandrjuscenko/hackernews-scraper.git
 
-2. Создание виртуального окружения и установка зависимостей
-
-# Windows:
-python -m venv venv         # создаём своё виртуальное окружение
+2. Create a virtual environment and install dependencies
+   
+**Windows:**
+```bash
+python -m venv venv       
 venv\Scripts\activate
+```
 
-# Установка библиотек
-Pip installs:
+3. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+The requirements.txt contains:
 Django==6.0.1
 requests==2.32.5
 beautifulsoup4==4.14.3
 mysqlclient==2.2.7
 
-3. Настройка базы данных MySQL
+4. Set up MySQL database
+   
+The project uses the database codnity_db.
 
-Проект использует базу данных **codnity_db**.  
-
-Создайте базу данных:
+Create the database and user:
 
 ```sql
 CREATE DATABASE codnity_db;
@@ -50,41 +60,57 @@ CREATE DATABASE codnity_db;
 CREATE USER 'codnity_user'@'localhost' IDENTIFIED BY 'password123';
 GRANT ALL PRIVILEGES ON codnity_db.* TO 'codnity_user'@'localhost';
 FLUSH PRIVILEGES;
-
-В файле Scraper/settings.py указаны настройки подключения:
-
-4. Применение миграций
+```
+5. Apply migrations
+```bash
 python manage.py makemigrations
 python manage.py migrate
+```
 
-5. Сбор и обновление новостей
+6. Collect and update news
+```bash
 python manage.py scrape
+```
 
-6. Запуск сервера
+7. Run the server
+```bash
 python manage.py runserver
+```
 
-Главная страница (`/`) **отображает таблицу со всеми новостями**.  
-Данные обновляются и добавляются **только при запуске команды**:
+8. Create a Django superuser (for admin access)
+```bash
+python manage.py createsuperuser
+```
 
-
-
-Scraper/
-├─ Scraper/         # Настройки Django
-├─ News/            # Приложение News
-│  ├─ models.py     # Модель Article
-│  ├─ views.py      # Получение данных и рендер на страницу
-│  ├─ templates/
-│  │  └─ news_list.html  # Шаблон с DataTables
-│  └─ management/
-│     └─ commands/
-│        └─ scrape.py  # Команда для сбора и обновления данных
-└─ README.md
-
-## Tests
-
+9. Tests
+The project includes basic unit tests for the Article model.
 Django automatically creates and destroys a test database when running tests.
 
-To run tests:
-
+```bash
 python manage.py test news
+```
+
+## Project Structure
+
+```text
+manage.py
+requirements.txt
+README.md
+db.sqlite3
+news/
+├─ models.py
+├─ views.py
+├─ urls.py
+├─ admin.py
+├─ management/
+│  └─ commands/
+│      └─ scrape.py
+└─ templates/
+    └─ article_display.html
+scraper/
+├─ settings.py
+├─ urls.py
+├─ wsgi.py
+└─ asgi.py
+```
 
